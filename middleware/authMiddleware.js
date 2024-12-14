@@ -2,6 +2,9 @@ const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
+  if (req.path === "/login" || req.path === "/signup") {
+    return next(); // Skip authentication
+  }
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res
