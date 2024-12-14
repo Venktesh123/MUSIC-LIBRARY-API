@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -7,25 +8,28 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      require: true,
+      required: true,
+      unique: true,
     },
-    pssword: {
+    password: {
       type: String,
       required: true,
+    },
+    organization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Organization",
+      required: true, // Organization can be empty
     },
     role: {
       type: String,
       required: true,
-      enum: ["admin", "editor", "viewer"],
-    },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Organization",
-      required: true,
+      enum: ["admin", "viewer", "editor"],
+      default: "viewer", // Default role if nothing is provided
     },
   },
   {
     timestamps: true,
   }
 );
-mongoose.exports = mongoose.model("Uer", userSchema);
+
+module.exports = mongoose.model("User", userSchema);
