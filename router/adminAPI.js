@@ -11,9 +11,7 @@ router.use(roleMiddleware(["admin"]));
 router.get("/users", adminController.allUsers);
 router.post("/adduser", adminController.addUser);
 
-router.post("/create-user", (req, res) => {
-  res.json({ message: "User created successfully by Admin!" });
-});
+router.delete("/user", adminController.deleteUser);
 
 router.delete("/delete-user/:id", (req, res) => {
   res.json({ message: `User with ID ${req.params.id} deleted by Admin!` });
