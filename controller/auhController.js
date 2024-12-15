@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const Organization = require("../models/Organization");
 
 const SignUp = async (req, res) => {
+  console.log("signup");
   try {
     const { name, email, password, organizationName } = req.body;
 
@@ -105,5 +106,26 @@ const login = async (req, res) => {
     return res.status(500).json({ error: "Internal server error." });
   }
 };
+const logout = async (req, res) => {
+  const authHeader = req.headers.authorization;
 
-module.exports = { SignUp, login };
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ error: "Authentication token missing or invalid." });
+  }
+
+  const token = authHeader.split(" ")[1]; // Extract token from header
+
+  // Remove token from active tokens list
+  if (activeTokens.has(token)) {
+    activeTokens.delete(token); // Remove the token
+    return res
+      .status(200)
+      .json({ message: "Logout successful. Token invalidated." });
+  }
+
+  return res.status(400).json({ error: "Token already invalid or not found." });
+};
+
+module.exports = { SignUp, login, logout };
