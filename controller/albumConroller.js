@@ -5,7 +5,7 @@ const createResponse = require("../utils/responseFormat"); // Assuming you have 
 const createAlbum = async (req, res) => {
   try {
     const { name, year, hidden, artist, tracks } = req.body;
-    const { organization } = req.user;
+    const { id } = req.user;
 
     // Validate that required fields are present
     if (!name || !year || !artist) {
@@ -23,7 +23,7 @@ const createAlbum = async (req, res) => {
       hidden: hidden || false, // Hidden is optional, defaults to false
       artist,
       tracks: tracks || [], // tracks are optional, defaults to empty array
-      organization,
+      organization: id,
     });
 
     // Save the album to the database
@@ -43,7 +43,10 @@ const createAlbum = async (req, res) => {
 // Get all albums
 const getAllAlbums = async (req, res) => {
   try {
-    const albums = await Album.find().populate("artist tracks"); // Populating artist and tracks for detailed info
+    const { id } = req.user;
+    const albums = await Album.find({ organization: id }).populate(
+      "artist tracks"
+    ); // Populating artist and tracks for detailed info
     if (!albums || albums.length === 0) {
       return res
         .status(404)

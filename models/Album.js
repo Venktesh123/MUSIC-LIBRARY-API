@@ -20,6 +20,10 @@ const albumSchema = new mongoose.Schema({
     ref: "Artist",
     required: true,
   },
+  organization: {
+    type: String, // Add validation if needed (e.g., minlength, maxlength)
+    required: true,
+  },
   // Reference to Track model (one album can have many tracks)
   tracks: [
     {
