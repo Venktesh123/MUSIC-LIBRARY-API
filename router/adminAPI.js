@@ -1,10 +1,10 @@
 const express = require("express");
 const roleMiddleware = require("../middleware/roleMddleware");
-
 const router = express.Router();
 const adminController = require("../controller/adminConrollers");
 
 // Apply roleMiddleware to all routes in this router
+
 router.use(roleMiddleware(["admin"]));
 
 // Admin-specific routes
