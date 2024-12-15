@@ -1,6 +1,7 @@
 const express = require("express");
 const roleMiddleware = require("../middleware/roleMddleware");
 const router = express.Router();
+const artistController = require("../controller/artistConroller");
 router.use(roleMiddleware(["admin", "editor"]));
 router.post("/artists", artistController.createArtist);
 

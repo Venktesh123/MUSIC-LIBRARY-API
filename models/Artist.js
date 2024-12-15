@@ -14,13 +14,16 @@ const artistSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  // Reference to multiple Albums
   albums: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Album",
     },
   ],
+  organization: {
+    type: String, // Add validation if needed (e.g., minlength, maxlength)
+    required: true,
+  },
 });
 
 const Artist = mongoose.model("Artist", artistSchema);

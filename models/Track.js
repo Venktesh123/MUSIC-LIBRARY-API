@@ -14,6 +14,10 @@ const trackSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  organization: {
+    type: String, // Add validation if needed (e.g., minlength, maxlength)
+    required: true,
+  },
   // Reference to Album model (each track belongs to one album)
   album: {
     type: mongoose.Schema.Types.ObjectId,

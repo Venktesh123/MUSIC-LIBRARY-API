@@ -5,7 +5,7 @@ const createResponse = require("../utils/responseFormat"); // Assuming you have 
 const createTrack = async (req, res) => {
   try {
     const { name, duration, hidden = false, album } = req.body; // Default hidden to false
-    const { organization } = req.user; // Extract organization directly for clarity
+    const { id } = req.user; // Extract organization directly for clarity
 
     // Validate required fields
     if (!name || !duration || !album) {
@@ -36,7 +36,7 @@ const createTrack = async (req, res) => {
       duration,
       hidden,
       album,
-      organization,
+      organization: id,
     });
 
     await newTrack.save();
@@ -55,7 +55,8 @@ const createTrack = async (req, res) => {
 // Get all tracks
 const getAllTracks = async (req, res) => {
   try {
-    const tracks = await Track.find().populate("album"); // Populating album for detailed info
+    const { id } = req.user;
+    const tracks = await Track.find({ organization: id }).populate("album"); // Populating album for detailed info
     if (!tracks || tracks.length === 0) {
       return res
         .status(404)

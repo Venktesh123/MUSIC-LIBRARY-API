@@ -1,14 +1,17 @@
 const Artist = require("../models/Artist");
-const createResponse = require("../utils/responseFormat"); // Assuming you have a utility for response format
+const createResponse = require("../utills/responseFormate"); // Assuming you have a utility for response format
 
 // Create a new artist
+
 const createArtist = async (req, res) => {
   try {
     const { name, grammy, hidden } = req.body;
-    const { organization } = req.user;
+    const { id } = req.user; // Assuming req.user contains the authenticated user's details (organization ID)
+
+    console.log("User Organization ID:", id);
 
     // Validate that required fields are present
-    if (!name || !grammy) {
+    if (!name || grammy === undefined) {
       return res
         .status(400)
         .json(
@@ -16,13 +19,15 @@ const createArtist = async (req, res) => {
         );
     }
 
-    // Create a new artist
+    // Dynamically add the organization field
     const newArtist = new Artist({
       name,
       grammy,
       hidden: hidden || false,
-      organization, // Hidden is optional, defaults to false
+      organization: id,
     });
+
+    // Add organization dynamically
 
     // Save the artist to the database
     await newArtist.save();
@@ -43,7 +48,11 @@ const createArtist = async (req, res) => {
 // Get all artists
 const getAllArtists = async (req, res) => {
   try {
-    const artists = await Artist.find();
+    const { id } = req.user; // Assuming req.user contains the authenticated user's organization ID
+
+    // Find all artists belonging to the given organization
+    const artists = await Artist.find({ organization: id });
+
     if (!artists || artists.length === 0) {
       return res
         .status(404)
