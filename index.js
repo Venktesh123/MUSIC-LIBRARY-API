@@ -10,6 +10,10 @@ const artistRouter = require("./router/artistRouter");
 const favoriteRouter = require("./router/favoriteRouter");
 app.use(express.json());
 const PORT = process.env.PORT || 5000;
+app.get("/", function (req, res) {
+  res.send("<h1>Server is working</h1>");
+  return;
+});
 dbConnect();
 app.use("/api/auth", authrouter);
 app.use(authMiddleware);
