@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 dbConnect();
 app.use("/api/auth", authrouter);
-app.get("/data", (req, res) => {
+app.get("/", (req, res) => {
   res.send("<h1>Server is working</h1>");
 });
 
